@@ -1,0 +1,24 @@
+import java.io.*;
+import java.util.*;
+
+public class WordFrequencyAnalyzer {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
+        Map<String, Integer> frequencyMap = new HashMap<>();
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] words = line.toLowerCase().split("\\W+");
+            for (String word : words) {
+                if (!word.isEmpty()) {
+                    frequencyMap.put(word, frequencyMap.getOrDefault(word, 0) + 1);
+                }
+            }
+        }
+        reader.close();
+
+        frequencyMap.entrySet().stream()
+            .sorted((e1, e2) -> e2.getValue() - e1.getValue())
+            .forEach(e -> System.out.println(e.getKey() + ": " + e.getValue()));
+    }
+}
