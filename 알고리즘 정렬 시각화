@@ -1,0 +1,84 @@
+// src/App.jsx
+import React, { useState, useEffect, useRef } from "react";
+
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+export default function App(){
+  const [arr, setArr] = useState([]);
+  const [size, setSize] = useState(30);
+  const [speed, setSpeed] = useState(50);
+  const [running, setRunning] = useState(false);
+
+  useEffect(()=> resetArray(), []);
+  function resetArray(){
+    const a = Array.from({length:size}, ()=>Math.floor(Math.random()*300)+5);
+    setArr(a);
+  }
+
+  async function bubbleSort(){
+    setRunning(true);
+    const a = arr.slice();
+    for(let i=0;i<a.length;i++){
+      for(let j=0;j<a.length-1-i;j++){
+        if(a[j] > a[j+1]){
+          [a[j], a[j+1]] = [a[j+1], a[j]];
+          setArr(a.slice());
+          await sleep(Math.max(5, 200-speed));
+        }
+      }
+    }
+    setRunning(false);
+  }
+
+  async function quickSort(){
+    setRunning(true);
+    const a = arr.slice();
+    async function qs(l, r){
+      if(l>=r) return;
+      let pivot = a[Math.floor((l+r)/2)];
+      let i=l, j=r;
+      while(i<=j){
+        while(a[i] < pivot) i++;
+        while(a[j] > pivot) j--;
+        if(i<=j){
+          [a[i], a[j]] = [a[j], a[i]];
+          setArr(a.slice());
+          await sleep(Math.max(5, 200-speed));
+          i++; j--;
+        }
+      }
+      await qs(l, j);
+      await qs(i, r);
+    }
+    await qs(0, a.length-1);
+    setRunning(false);
+  }
+
+  return (
+    <div style={{padding:20,fontFamily:"sans-serif"}}>
+      <h1>정렬 시각화</h1>
+      <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:10}}>
+        <label>크기: <input type="range" min="5" max="120" value={size}
+          onChange={e=>{setSize(+e.target.value);}}/></label>
+        <button onClick={resetArray} disabled={running}>랜덤</button>
+        <label>속도: <input type="range" min="5" max="190" value={speed}
+          onChange={e=>setSpeed(+e.target.value)}/></label>
+        <button onClick={bubbleSort} disabled={running}>Bubble Sort</button>
+        <button onClick={quickSort} disabled={running}>Quick Sort</button>
+      </div>
+
+      <div style={{display:"flex",alignItems:"flex-end",height:320, border:"1px solid #eee", padding:10}}>
+        {arr.map((v,i)=>(
+          <div key={i} title={v}
+               style={{
+                 width: Math.max(2, 600/arr.length - 2),
+                 height: v,
+                 marginRight:2,
+                 background: `hsl(${Math.floor((v/350)*200)},70%,50%)`
+               }} />
+        ))}
+      </div>
+      <p>설명: 크기 조절 후 <strong>랜덤</strong> 클릭 → 정렬 버튼으로 시각화 가능</p>
+    </div>
+  );
+}
