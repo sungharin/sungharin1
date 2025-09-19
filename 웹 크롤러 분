@@ -1,0 +1,35 @@
+# crawler_analyze.py
+import requests
+from bs4 import BeautifulSoup
+from collections import Counter
+import re
+import sys
+
+def fetch_text(url):
+    r = requests.get(url, headers={"User-Agent":"Mozilla/5.0"})
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+    # 단순히 본문 텍스트를 모음 (사이트별로 selector 수정 권장)
+    article = soup.find('article') or soup.find('div', {'class':'article'}) or soup
+    text = article.get_text(separator=' ')
+    return text
+
+def clean_words(text):
+    text = re.sub(r'[^A-Za-z0-9가-힣\s]', ' ', text)
+    words = text.split()
+    # 소문자 변환 (영어)
+    words = [w.lower() for w in words if len(w) > 1]
+    return words
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("사용법: python crawler_analyze.py <URL>")
+        sys.exit(1)
+    url = sys.argv[1]
+    txt = fetch_text(url)
+    words = clean_words(txt)
+    cnt = Counter(words)
+    top = cnt.most_common(30)
+    print("상위 30개 단어:")
+    for w,c in top:
+        print(f"{w:20} {c}")
