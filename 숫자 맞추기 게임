@@ -1,0 +1,55 @@
+import random
+import json
+import os
+
+FILE = "score.json"
+
+def load_score():
+    if os.path.exists(FILE):
+        with open(FILE) as f:
+            return json.load(f)
+    return []
+
+def save_score(scores):
+    with open(FILE, "w") as f:
+        json.dump(scores, f, indent=2)
+
+def game():
+    number = random.randint(1, 100)
+    attempts = 0
+
+    while True:
+        guess = int(input("숫자 입력(1~100): "))
+        attempts += 1
+
+        if guess > number:
+            print("더 작음")
+        elif guess < number:
+            print("더 큼")
+        else:
+            print(f"정답! 시도 횟수: {attempts}")
+            return attempts
+
+def show_ranking(scores):
+    scores.sort()
+    print("\n랭킹")
+    for i, s in enumerate(scores[:10]):
+        print(i+1, ":", s)
+
+def main():
+    scores = load_score()
+
+    while True:
+        print("\n1.게임 시작 2.랭킹 보기 3.종료")
+        menu = input("> ")
+
+        if menu == "1":
+            score = game()
+            scores.append(score)
+        elif menu == "2":
+            show_ranking(scores)
+        elif menu == "3":
+            save_score(scores)
+            break
+
+main()
