@@ -1,0 +1,59 @@
+import json
+import os
+
+FILE_NAME = "todos.json"
+
+def load_todos():
+    if not os.path.exists(FILE_NAME):
+        return []
+    with open(FILE_NAME, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def save_todos(todos):
+    with open(FILE_NAME, "w", encoding="utf-8") as f:
+        json.dump(todos, f, ensure_ascii=False, indent=2)
+
+def show_todos(todos):
+    if not todos:
+        print("할 일이 없습니다.")
+        return
+    for i, todo in enumerate(todos):
+        status = "완료" if todo["done"] else "미완료"
+        print(f"{i+1}. {todo['task']} [{status}]")
+
+def add_todo(todos):
+    task = input("할 일 입력: ")
+    todos.append({"task": task, "done": False})
+
+def complete_todo(todos):
+    show_todos(todos)
+    num = int(input("완료할 번호: ")) - 1
+    if 0 <= num < len(todos):
+        todos[num]["done"] = True
+
+def delete_todo(todos):
+    show_todos(todos)
+    num = int(input("삭제할 번호: ")) - 1
+    if 0 <= num < len(todos):
+        todos.pop(num)
+
+def main():
+    todos = load_todos()
+
+    while True:
+        print("\n1.목록 2.추가 3.완료 4.삭제 5.종료")
+        menu = input("선택: ")
+
+        if menu == "1":
+            show_todos(todos)
+        elif menu == "2":
+            add_todo(todos)
+        elif menu == "3":
+            complete_todo(todos)
+        elif menu == "4":
+            delete_todo(todos)
+        elif menu == "5":
+            save_todos(todos)
+            break
+
+main()
