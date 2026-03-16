@@ -1,0 +1,37 @@
+import os
+import shutil
+
+BASE_DIR = "downloads"
+
+folders = {
+    "images": ["png","jpg","jpeg","gif"],
+    "videos": ["mp4","avi","mov"],
+    "docs": ["pdf","docx","txt"],
+    "music": ["mp3","wav"]
+}
+
+def organize():
+    for file in os.listdir(BASE_DIR):
+        path = os.path.join(BASE_DIR, file)
+
+        if os.path.isfile(path):
+
+            ext = file.split(".")[-1].lower()
+
+            for folder, types in folders.items():
+                if ext in types:
+
+                    target = os.path.join(BASE_DIR, folder)
+
+                    if not os.path.exists(target):
+                        os.makedirs(target)
+
+                    shutil.move(path, os.path.join(target, file))
+                    break
+
+def main():
+    print("파일 정리 시작")
+    organize()
+    print("정리 완료")
+
+main()
