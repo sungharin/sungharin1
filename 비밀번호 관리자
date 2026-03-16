@@ -1,0 +1,54 @@
+import json
+import os
+
+FILE = "passwords.json"
+
+def load_data():
+    if os.path.exists(FILE):
+        with open(FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def save_data(data):
+    with open(FILE, "w") as f:
+        json.dump(data, f, indent=2)
+
+def add_account(data):
+    site = input("사이트: ")
+    username = input("아이디: ")
+    password = input("비밀번호: ")
+
+    data[site] = {
+        "username": username,
+        "password": password
+    }
+
+def show_accounts(data):
+    for site, info in data.items():
+        print(f"{site} -> {info['username']} / {info['password']}")
+
+def search_account(data):
+    site = input("검색 사이트: ")
+    if site in data:
+        print(data[site])
+    else:
+        print("없음")
+
+def main():
+    data = load_data()
+
+    while True:
+        print("\n1.추가 2.조회 3.검색 4.종료")
+        menu = input("> ")
+
+        if menu == "1":
+            add_account(data)
+        elif menu == "2":
+            show_accounts(data)
+        elif menu == "3":
+            search_account(data)
+        elif menu == "4":
+            save_data(data)
+            break
+
+main()
