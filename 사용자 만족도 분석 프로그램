@@ -1,0 +1,30 @@
+# 사용자 만족도 분석 프로그램
+
+satisfaction = []
+
+print("사용자 만족도 조사")
+print("1~5점 사이의 만족도를 입력하세요.")
+print("종료하려면 0을 입력하세요.")
+
+while True:
+    score = int(input("만족도 입력: "))
+
+    if score == 0:
+        break
+
+    if 1 <= score <= 5:
+        satisfaction.append(score)
+    else:
+        print("1~5 사이의 숫자를 입력해주세요.")
+
+if len(satisfaction) > 0:
+    average = sum(satisfaction) / len(satisfaction)
+
+    print("\n===== 만족도 분석 결과 =====")
+    print("응답 인원:", len(satisfaction))
+    print("평균 만족도:", round(average, 2))
+
+    for score in range(5, 0, -1):
+        print(f"{score}점:", satisfaction.count(score), "명")
+else:
+    print("입력된 만족도 데이터가 없습니다.")
