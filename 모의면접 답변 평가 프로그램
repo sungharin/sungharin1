@@ -1,0 +1,43 @@
+# 모의면접 답변 평가 프로그램
+
+print("===== 모의면접 답변 평가 =====")
+
+question = input("면접 질문: ")
+answer = input("답변: ")
+
+keywords = ["문제", "해결", "협업", "경험", "성과"]
+
+keyword_count = 0
+
+for keyword in keywords:
+    if keyword in answer:
+        keyword_count += 1
+
+answer_length = len(answer)
+
+score = 0
+
+if answer_length >= 100:
+    score += 5
+elif answer_length >= 50:
+    score += 3
+else:
+    score += 1
+
+score += keyword_count
+
+if score > 10:
+    score = 10
+
+print("\n===== 평가 결과 =====")
+print("질문:", question)
+print("답변 글자 수:", answer_length)
+print("관련 키워드:", keyword_count, "개")
+print("기본 평가 점수:", score, "/ 10")
+
+if score >= 8:
+    print("피드백: 답변의 구체성과 내용이 충분합니다.")
+elif score >= 5:
+    print("피드백: 경험이나 구체적인 사례를 추가하면 좋습니다.")
+else:
+    print("피드백: 답변의 내용을 조금 더 구체적으로 작성해보세요.")
