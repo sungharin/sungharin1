@@ -1,0 +1,19 @@
+# 스마트 물 관리 시스템
+
+print("===== 스마트 물 관리 시스템 =====")
+
+water_level = float(input("현재 물탱크 수위(%): "))
+
+if water_level <= 20:
+    pump = True
+    message = "수위가 낮아 펌프를 작동합니다."
+elif water_level >= 80:
+    pump = False
+    message = "수위가 충분하여 펌프를 정지합니다."
+else:
+    pump = False
+    message = "현재 수위가 적정 범위입니다."
+
+print("\n현재 수위:", water_level, "%")
+print("펌프 상태:", "ON" if pump else "OFF")
+print("상태:", message)
