@@ -1,0 +1,37 @@
+# 스마트 서리 피해 예방 시스템
+
+print("===== 서리 피해 위험 분석 =====")
+
+temperature = float(input("현재 기온(℃): "))
+humidity = float(input("현재 습도(%): "))
+wind_speed = float(input("현재 풍속(m/s): "))
+
+risk_score = 0
+
+if temperature <= 0:
+    risk_score += 2
+elif temperature <= 3:
+    risk_score += 1
+
+if humidity >= 80:
+    risk_score += 2
+elif humidity >= 60:
+    risk_score += 1
+
+if wind_speed <= 1:
+    risk_score += 1
+
+if risk_score >= 4:
+    risk = "높음"
+    action = "서리 피해 예방 장치를 작동합니다."
+elif risk_score >= 2:
+    risk = "주의"
+    action = "현재 환경을 지속적으로 관찰합니다."
+else:
+    risk = "낮음"
+    action = "현재 서리 위험이 낮습니다."
+
+print("\n===== 분석 결과 =====")
+print("서리 위험도:", risk)
+print("위험 점수:", risk_score)
+print("권장 조치:", action)
