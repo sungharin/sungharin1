@@ -1,0 +1,38 @@
+# 영화 리뷰 감성 분석 프로그램
+
+positive_words = [
+    "재미있다", "좋다", "최고", "감동", "추천",
+    "재미", "훌륭하다", "만족"
+]
+
+negative_words = [
+    "재미없다", "별로", "최악", "지루하다",
+    "실망", "아쉽다", "추천하지"
+]
+
+print("===== 영화 리뷰 분석 =====")
+
+review = input("영화 리뷰를 입력하세요: ")
+
+positive_count = 0
+negative_count = 0
+
+for word in positive_words:
+    if word in review:
+        positive_count += 1
+
+for word in negative_words:
+    if word in review:
+        negative_count += 1
+
+if positive_count > negative_count:
+    result = "긍정적인 리뷰"
+elif negative_count > positive_count:
+    result = "부정적인 리뷰"
+else:
+    result = "중립적인 리뷰"
+
+print("\n===== 분석 결과 =====")
+print("긍정 단어:", positive_count, "개")
+print("부정 단어:", negative_count, "개")
+print("분석 결과:", result)
